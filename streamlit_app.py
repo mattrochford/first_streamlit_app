@@ -1,7 +1,8 @@
 import streamlit
 
-streamlit.title('My app for Snowflake Badge 2 Course')
+streamlit.title('My Parents New Healthy Diner')
 
-streamlit.header('This is a header')
-streamlit.text('Item 1')
-streamlit.text('Item 2')
+streamlit.header('Breakfast Menu')
+streamlit.text('Omega 3 & Blueberry Oatmeal')
+streamlit.text('Kale, Spinach & Rocket Smoothie')
+streamlit.text('Hard-Boiled Free-Range Egg')
