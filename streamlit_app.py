@@ -4,6 +4,9 @@ import requests
 import snowflake.connector
 from urllib.error import URLError
 
+# Global variable for snowflake connection
+my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+
 def main():
   streamlit.title("My Mom's New Healthy Diner")
 
@@ -48,12 +51,10 @@ def main():
   streamlit.stop()
 
   # Do Snowflake stuff
-  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-  my_cur = my_cnx.cursor()
-  my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
-  my_data_rows = my_cur.fetchall()
-  streamlit.header("The fruit load list contains:")
-  streamlit.dataframe(my_data_rows)
+  if streamlit.button('Get Fruit Load List'): 
+    #streamlit.header("The fruit load list contains:")
+    my_data_rows = get_fruit_load_list()
+    streamlit.dataframe(my_data_rows)
 
   add_my_fruit = streamlit.text_input('What fruit would you like to add?')
   streamlit.write('Thanks for adding ', add_my_fruit)
@@ -68,6 +69,13 @@ def get_fruityvice_data(this_fruit_choice):
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
   
   return fruityvice_normalized
+  
+def get_fruit_load_list():
+  
+  with my_cnx.cursor() as my cur:
+    my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
+    return my_cur.fetchall()
+
 
 if __name__ == '__main__':
   main()
