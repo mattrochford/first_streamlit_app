@@ -48,7 +48,7 @@ def main():
   except URLError as e:
     streamlit.error()
 
-  streamlit.stop()
+  #streamlit.stop()
 
   # Do Snowflake stuff
   if streamlit.button('Get Fruit Load List'): 
