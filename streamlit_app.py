@@ -60,10 +60,13 @@ def main():
   streamlit.write('Thanks for adding ', add_my_fruit)
 
   # Add row to table
-  with my_cnx.cursor() as my_cur:
-    my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES ('from streamlit')")
+  if streamlit.button('Add a Fruit to the List'):
+    return_string = insert_row_snowflake(add_my_fruit)
+    streamlit.text(return_string)
+    
 
 def get_fruityvice_data(this_fruit_choice):
+  
   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+this_fruit_choice)
 
   # Convert the response to a dataframe
@@ -77,6 +80,11 @@ def get_fruit_load_list():
     my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
     return my_cur.fetchall()
 
+def insert_row_snowflake(new_fruit):
+  sql_query = f"INSERT INTO FRUIT_LOAD_LIST VALUES ('{new_fruit}')"
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute(sql_query)
+    return "Thanks for adding " + new_fruit
 
 if __name__ == '__main__':
   main()
