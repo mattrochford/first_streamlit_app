@@ -49,9 +49,11 @@ def main():
     streamlit.error()
 
   #streamlit.stop()
-
+  
+  streamlit.header('View Our Fruit List - Add Your Favorites!')
+  
   # Do Snowflake stuff
-  if streamlit.button('Get Fruit Load List'): 
+  if streamlit.button('Get Fruit List'): 
     #streamlit.header("The fruit load list contains:")
     my_data_rows = get_fruit_load_list()
     streamlit.dataframe(my_data_rows)
@@ -77,12 +79,15 @@ def get_fruit_load_list():
   
   with my_cnx.cursor() as my_cur:
     my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
-    return my_cur.fetchall()
+    data = my_cur.fetchall() 
+    my_cnx.close()
+    return data
 
 def insert_row_snowflake(new_fruit):
   sql_query = f"INSERT INTO FRUIT_LOAD_LIST VALUES ('{new_fruit}')"
   with my_cnx.cursor() as my_cur:
     my_cur.execute(sql_query)
+    my_cnx.close()
     return "Thanks for adding " + new_fruit
 
 if __name__ == '__main__':
